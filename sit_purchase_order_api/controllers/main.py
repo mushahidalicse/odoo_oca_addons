@@ -165,7 +165,7 @@ class PurchaseController(http.Controller):
         data = {"status":200,"response":prod,"message":"success"}
         return data
     
-    @http.route(['/get_purchase_requests'], type='json', auth="public")
+    @http.route(['/get_purchase_requests'], type='json', auth="user")
     def get_purchase_request(self):
         pr = request.env['purchase.request'].search([('cmms_pr','=',True)])
         prs = []
