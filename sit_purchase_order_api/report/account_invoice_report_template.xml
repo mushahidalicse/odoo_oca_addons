@@ -1,0 +1,7 @@
+<odoo>
+    <template id="account_invoice_report_template_new" inherit_id="custom_invoice.report_invoice_document_custom">
+        <xpath expr="//div[@class='page']/table/tr/td/b" position="after">
+            <img valign="middle" align="right" style="margin-top:-20px !important;vertical-align:'middle'; width:100px;height:100px;float:right;" t-if="o.qr_image" t-att-src="image_data_uri(o.qr_image)" alt="QR Code"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,7 @@
+.custom_tree table thead tr th{
+    text-align: left !important;
+}
+
+.custom_tree table tbody tr td{
+    text-align: left !important;
+}
