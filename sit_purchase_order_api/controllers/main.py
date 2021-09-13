@@ -279,7 +279,7 @@ class PurchaseController(http.Controller):
             data = {"status":200,"response":res,"Message":"Purchase Request Created!"}
             return data
 
-    @http.route(['/create_purchase_request_new'], methods=['POST'], csrf=False, auth="public", type='json')
+    @http.route(['/create_purchase_request_new'], methods=['POST'], csrf=False, auth="user", type='json')
     def create_purchase_request(self, **post):
         if request.jsonrequest:
             res = []
