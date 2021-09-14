@@ -10,162 +10,162 @@ from odoo import fields, http, tools, _
 
 class PurchaseController(http.Controller):
 
-    @http.route(['/get_purchase_orders'], type='json', auth="user")
-    def get_purchase_orders(self):
-        po = request.env['purchase.order'].search([])
-        pos = []
-        for rec in po:
-            lines = []
-            for ol in rec.order_line:
-                line = {
-                    'product':ol.product_id.name,
-                    'description':ol.name,
-                    'date':ol.date_planned,
-                    'quantity':ol.product_qty,
-                    'uom':ol.product_uom.name,
-                    'unit_price':ol.price_unit,
-                    'price':ol.price_subtotal,
-                }
-                lines.append(line)
-            vals = {
-                'id':rec.id,
-                'name':rec.name,
-                'vendor_name':rec.partner_id.name,
-                'vendor_ref':rec.partner_ref,
-                # 'currency':rec.currency_id.name,
-                'order_date':rec.date_order,
-                'source':rec.origin,
-                # 'company':rec.company_id.name,
-                'price_before_disc':rec.amount_untaxed,
-                'tax':rec.amount_tax,
-                'total_amount':rec.amount_total,
-                'lines':lines,
-            }
+    # @http.route(['/get_purchase_orders'], type='json', auth="user")
+    # def get_purchase_orders(self):
+    #     po = request.env['purchase.order'].search([])
+    #     pos = []
+    #     for rec in po:
+    #         lines = []
+    #         for ol in rec.order_line:
+    #             line = {
+    #                 'product':ol.product_id.name,
+    #                 'description':ol.name,
+    #                 'date':ol.date_planned,
+    #                 'quantity':ol.product_qty,
+    #                 'uom':ol.product_uom.name,
+    #                 'unit_price':ol.price_unit,
+    #                 'price':ol.price_subtotal,
+    #             }
+    #             lines.append(line)
+    #         vals = {
+    #             'id':rec.id,
+    #             'name':rec.name,
+    #             'vendor_name':rec.partner_id.name,
+    #             'vendor_ref':rec.partner_ref,
+    #             # 'currency':rec.currency_id.name,
+    #             'order_date':rec.date_order,
+    #             'source':rec.origin,
+    #             # 'company':rec.company_id.name,
+    #             'price_before_disc':rec.amount_untaxed,
+    #             'tax':rec.amount_tax,
+    #             'total_amount':rec.amount_total,
+    #             'lines':lines,
+    #         }
 
-            pos.append(vals)
-        data = {"status":200,"response":pos,"message":"success"}
-        return data
-
-
-    @http.route(['/get_vendors'], type='json', auth="user")
-    def get_vendors(self):
-        vendors = request.env['res.partner'].search([])
-        vend = []
-        for rec in vendors:
-            vals = {
-                'id':rec.id,
-                'name':rec.name,
-                'vendor_name':rec.name,
-                'address':rec.street,
-                'vat':rec.vat,
-                'phone':rec.phone,
-                'mobile':rec.mobile,
-                'email':rec.email,
-                'language':rec.lang,
-                'supplier':rec.supplier
-            }
-            vend.append(vals)
-        data = {"status":200,"response":vend,"message":"success"}
-        return data
+    #         pos.append(vals)
+    #     data = {"status":200,"response":pos,"message":"success"}
+    #     return data
 
 
-    @http.route(['/create_vendor'], type='json', auth="user")
-    def create_vendor(self, **rec):
-        if request.jsonrequest:
-            print("aaaaaaaaaaaaaaaaaaaaaaaaaa",rec)
-            if rec['name']:
-                name = rec['name']
-                vendor = request.env['res.partner'].sudo().search([('name','like',str(name))],limit=1)
-                res = []
-                if not vendor: 
-                    vals={
-                        "name":rec["name"],
-                    }
-                    vals['street'] = rec['address']
-                    vals['vat']=int(rec['vat'])
-                    vals['phone']=rec['phone']
-                    vals['supplier']=rec['supplier']
-                    vendor = request.env['res.partner'].sudo().create(vals)
-                resp = {
-                    "id":vendor.id,
-                    "name":vendor.name,
-                }
-                res.append(resp)
-                data = {"status":200,"response":res,"message":"success"}
-                return data
+    # @http.route(['/get_vendors'], type='json', auth="user")
+    # def get_vendors(self):
+    #     vendors = request.env['res.partner'].search([])
+    #     vend = []
+    #     for rec in vendors:
+    #         vals = {
+    #             'id':rec.id,
+    #             'name':rec.name,
+    #             'vendor_name':rec.name,
+    #             'address':rec.street,
+    #             'vat':rec.vat,
+    #             'phone':rec.phone,
+    #             'mobile':rec.mobile,
+    #             'email':rec.email,
+    #             'language':rec.lang,
+    #             'supplier':rec.supplier
+    #         }
+    #         vend.append(vals)
+    #     data = {"status":200,"response":vend,"message":"success"}
+    #     return data
 
-    @http.route(['/create_purchase_orders'], type='json', auth="user")
-    def create_purchase_order(self, **rec):
-        if request.jsonrequest:
-            res = []
 
-            if "id" in rec:
-                po_id = rec['id']
-                po = request.env['purchase.order'].sudo().search([('id','=',int(po_id))],limit=1)
+    # @http.route(['/create_vendor'], type='json', auth="user")
+    # def create_vendor(self, **rec):
+    #     if request.jsonrequest:
+    #         print("aaaaaaaaaaaaaaaaaaaaaaaaaa",rec)
+    #         if rec['name']:
+    #             name = rec['name']
+    #             vendor = request.env['res.partner'].sudo().search([('name','like',str(name))],limit=1)
+    #             res = []
+    #             if not vendor: 
+    #                 vals={
+    #                     "name":rec["name"],
+    #                 }
+    #                 vals['street'] = rec['address']
+    #                 vals['vat']=int(rec['vat'])
+    #                 vals['phone']=rec['phone']
+    #                 vals['supplier']=rec['supplier']
+    #                 vendor = request.env['res.partner'].sudo().create(vals)
+    #             resp = {
+    #                 "id":vendor.id,
+    #                 "name":vendor.name,
+    #             }
+    #             res.append(resp)
+    #             data = {"status":200,"response":res,"message":"success"}
+    #             return data
 
-            if "partner_id" in rec:
-                partner = request.env['res.partner'].sudo().search([('id','=',int(rec['partner_id']))],limit=1)
+    # @http.route(['/create_purchase_orders'], type='json', auth="user")
+    # def create_purchase_order(self, **rec):
+    #     if request.jsonrequest:
+    #         res = []
 
-            if "partner_name" in rec:
-                partner = request.env['res.partner'].sudo().search([('name','ilike',rec['partner_name'])],limit=1)
+    #         if "id" in rec:
+    #             po_id = rec['id']
+    #             po = request.env['purchase.order'].sudo().search([('id','=',int(po_id))],limit=1)
 
-            if not "partner_id" in rec and not "partner_name" in rec:
-                print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    #         if "partner_id" in rec:
+    #             partner = request.env['res.partner'].sudo().search([('id','=',int(rec['partner_id']))],limit=1)
 
-            else: 
-                vals = {
-                    'partner_id':int(rec['partner_id'])
-                }
-                # vals['company_id']=int(rec['company_id'])
-                po = request.env['purchase.order'].sudo().create(vals)
+    #         if "partner_name" in rec:
+    #             partner = request.env['res.partner'].sudo().search([('name','ilike',rec['partner_name'])],limit=1)
 
-            resp = {
-                "id":po.id,
-                "name":po.name,
-                "partner_name":po.partner_id.name,
-                "currency_id":po.currency_id.name,
-                "company_id":po.company_id.name,
-                "order_date":po.date_order
-            }
-            res.append(resp)
-            data = {"status":200,"response":res,"message":"success"}
-            return data
+    #         if not "partner_id" in rec and not "partner_name" in rec:
+    #             print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
-    @http.route(['/get_products'], type='json', auth="user")
-    def get_products(self):
-        products = request.env['product.template'].search([])
-        prod = []
-        for rec in products:
-            sellers = []
-            for sel in rec.seller_ids:
-                seller = {
-                    'name':sel.name,
-                    'minimum_qty':sel.min_qty,
-                    'price':sel.price
-                }
-                sellers.append(seller)
-            vals = {
-                'id':rec.id,
-                'name':rec.name,
-                'can_be_sale':rec.sale_ok,
-                'can_be_purchase':rec.purchase_ok,
-                'product_type':rec.type,
-                'default_code':rec.default_code,
-                'barcode':rec.barcode,
-                'categ_id':rec.categ_id,
-                'alternative_name':rec.alternative_name,
-                'old_barcode':rec.old_barcode,
-                'sale_price':rec.lst_price,
-                'cost_price':rec.standard_price,
-                'uom':rec.uom_id,
-                'uom_po':rec.uom_po_id,
-                'sellers':sellers,
-            }
-            prod.append(vals)
-        data = {"status":200,"response":prod,"message":"success"}
-        return data
+    #         else: 
+    #             vals = {
+    #                 'partner_id':int(rec['partner_id'])
+    #             }
+    #             # vals['company_id']=int(rec['company_id'])
+    #             po = request.env['purchase.order'].sudo().create(vals)
+
+    #         resp = {
+    #             "id":po.id,
+    #             "name":po.name,
+    #             "partner_name":po.partner_id.name,
+    #             "currency_id":po.currency_id.name,
+    #             "company_id":po.company_id.name,
+    #             "order_date":po.date_order
+    #         }
+    #         res.append(resp)
+    #         data = {"status":200,"response":res,"message":"success"}
+    #         return data
+
+    # @http.route(['/get_products'], type='json', auth="user")
+    # def get_products(self):
+    #     products = request.env['product.template'].search([])
+    #     prod = []
+    #     for rec in products:
+    #         sellers = []
+    #         for sel in rec.seller_ids:
+    #             seller = {
+    #                 'name':sel.name,
+    #                 'minimum_qty':sel.min_qty,
+    #                 'price':sel.price
+    #             }
+    #             sellers.append(seller)
+    #         vals = {
+    #             'id':rec.id,
+    #             'name':rec.name,
+    #             'can_be_sale':rec.sale_ok,
+    #             'can_be_purchase':rec.purchase_ok,
+    #             'product_type':rec.type,
+    #             'default_code':rec.default_code,
+    #             'barcode':rec.barcode,
+    #             'categ_id':rec.categ_id,
+    #             'alternative_name':rec.alternative_name,
+    #             'old_barcode':rec.old_barcode,
+    #             'sale_price':rec.lst_price,
+    #             'cost_price':rec.standard_price,
+    #             'uom':rec.uom_id,
+    #             'uom_po':rec.uom_po_id,
+    #             'sellers':sellers,
+    #         }
+    #         prod.append(vals)
+    #     data = {"status":200,"response":prod,"message":"success"}
+    #     return data
     
-    @http.route(['/get_purchase_requests'], methods='POST', type='json', auth="user")
+    @http.route(['/get_purchase_requests'], methods=['POST'], type='json', auth="user")
     def get_purchase_request(self):
         pr = request.env['purchase.request'].search([('cmms_pr','=',True)])
         prs = []
@@ -279,8 +279,8 @@ class PurchaseController(http.Controller):
             data = {"status":200,"response":res,"Message":"Purchase Request Created!"}
             return data
 
-    @http.route(['/create_purchase_request_new'], methods='POST', auth="user", type='json')
-    def create_purchase_request(self, **post):
+    @http.route(['/create_purchase_request_new'], methods=['POST'], type='json', auth="user")
+    def create_purchase_request_new(self, **post):
         if request.jsonrequest:
             res = []
             vals = {
@@ -360,3 +360,20 @@ class PurchaseController(http.Controller):
             res.append(resp)
             data = {"status":200,"response":res,"Message":"Purchase Request Created!"}
             return data
+
+
+    @http.route(['/save_purchase_requests'], methods=['POST'], type='json', auth="user")
+    def save_purchase_request(self):
+
+        if request.jsonrequest:
+            res = []
+            vals = {
+                'requested_by': request.env.user.id,
+                'date_start': fields.Date.today(),
+                'picking_type_id': 6,
+                'cmms_pr':True,
+                'assigned_to':2,
+            }
+
+        data = {"status":200,"response":vals,"Message":"Purchase Request Created!"}
+        return data
