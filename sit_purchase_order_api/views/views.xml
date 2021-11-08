@@ -9,6 +9,39 @@
             <xpath expr="//field[@name='origin']" position="after">
                 <field name='cmms_pr' />
             </xpath>
+            <xpath expr="//page[1]" position="after">
+                <page string="CMMS Data" attrs="{'invisible':[('cmms_pr', '=', False)]}">
+                    <group>
+                        <group>
+                            <field name='cmms_name' readonly="1"/>
+                            <field name='cmms_revisionnum' />
+                        </group>
+                        <group>
+                            <field name='cmms_billto' />
+                            <field name='cmms_shipto' />
+                        </group>
+                        <group>
+                            <field name='cmms_e1edk01_belnr' />
+                            <field name='cmms_e1edk14_006' />
+                            <field name='cmms_e1edk14_007' />
+                            <field name='cmms_e1edk14_008' />
+                            <field name='cmms_e1edk14_012' />
+                            <field name='cmms_e1edk14_016' />
+                        </group>
+                        <group>
+                            <field name='cmms_e1edka1_partwb' />
+                            <field name='cmms_e1edka1_parvws' />
+                            <field name='cmms_e1edp01_action' />
+                            <field name='cmms_e1edp01_pstyv' />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/tree/field[@name='name']" position="after">
+                <field name='cmms_pr' invisible="1"/>
+                <field name='cmms_modelnum' attrs="{'invisible':[('cmms_pr', '=', False)]}" />
+                <field name='cmms_polinenum' attrs="{'invisible':[('cmms_pr', '=', False)]}" />
+            </xpath>
         </field>
     </record>
 </odoo>

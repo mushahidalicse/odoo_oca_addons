@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <!-- Mail template are declared in a NOUPDATE block so users can freely customize/delete them -->
+    <data>
+
+        <record id="email_template_purchase_request_cmms_create" model="mail.template">
+            <field name="name">Confirm Purchase Request: CMMS Request</field>
+            <field name="model_id" ref="purchase_request.model_purchase_request"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="email_from">odoo@rsa-metro.com</field>
+            <field name="email_to">${object.submit_email}</field>
+            <field name="subject">CMMS Purchase Request (Ref ${object.cmms_name or 'n/a' })</field>
+            <field name="body_html" type="html">
+        
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear Procurement Team
+                        <br/><br/>
+                        Here is a purchase request from <strong>CMMS Team</strong> created on <strong>${object.date_start}</strong> with new reference <strong>${object.cmms_name}</strong>
+                        <br/>
+                        % if object.description:
+                            Description:(${object.description})
+                        % endif
+                        <br/>
+                        % if object.origin:
+                            Source Document:(${object.origin})
+                        % endif
+                        <br/>
+                        If you have any questions, then reject it or set it to draft again.
+                        <br/><br/>
+                        Best regards,
+                    </p>
+                </div>
+            
+            </field>
+        </record>
+
+    </data>
+</odoo>

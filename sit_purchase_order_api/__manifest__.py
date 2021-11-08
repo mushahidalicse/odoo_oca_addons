@@ -12,6 +12,8 @@
         'purchase','purchase_request'
     ],
     'data': [
+        'data/purchase_request_data.xml',
+        'data/cmms_email_template.xml',
         'views/views.xml',
     ],
     'images': [
